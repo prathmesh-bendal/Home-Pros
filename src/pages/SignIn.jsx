@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import {AiFillEyeInvisible , AiFillEye} from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { signInWithEmailAndPassword,getAuth} from 'firebase/auth';
+import {toast} from 'react-toastify'
+
+import { useNavigate } from 'react-router-dom';
 export default function SignIn() {
+  const navigate=useNavigate();
   const [showPassword,setShowPassword]=useState(false);
   const [formData,setFormData]=useState({
     email:"",
@@ -16,6 +21,23 @@ export default function SignIn() {
       [e.target.id]:e.target.value
     }))
   }
+  async function onSubmit(e)
+  {
+    e.preventDefault();
+    try{
+      const auth=getAuth();
+      const userCredential= await signInWithEmailAndPassword(auth,email,password)
+
+      if(userCredential.user)
+      {
+        navigate("/")
+      }
+    }
+    catch(error)
+    {
+      toast.error("Invalid User Credentials")
+    }
+  }
   return (
     <section>
       <h1 className='text-3xl text-center mt-6 font-bold'>Sign In</h1>
@@ -24,7 +46,7 @@ export default function SignIn() {
           <img src='https://images.unsplash.com/photo-1634224143538-ce0221abf732?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cGFzc3dvcmR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60' alt='Fotgot Password!' className='w-full rounded-xl'/>
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form >
+          <form onSubmit={onSubmit} >
             <input type='email' id='email' value={email} onChange={onChange} placeholder='Email Address' className='mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white rounded'/>
             <div className='relative mb-6'>
             <input type={showPassword? 'text': 'password'} id='password' value={password} onChange={onChange} placeholder='Password' className='w-full px-4 py-2 text-xl text-gray-700 bg-white rounded' />
