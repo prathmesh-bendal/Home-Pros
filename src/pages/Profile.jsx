@@ -80,7 +80,7 @@ export default function Profile() {
   return (
     <>
       <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
-        <h1 className='text-3xl text-center mt-6 font-bold'>My Profile</h1>
+        <h1 className='text-3xl text-center mt-6 font-bold mb-6'>My Profile</h1>
         <div className='w-full md:w-[50%] mt-6 px-3'>
           <form >
             <input type='text' id='name' value={name} disabled={!changeDetail} onChange={onChange} className={`w-full px-16 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out mb-6 ${changeDetail && "bg-red-200 focus:bg-red-200"}` }/>
@@ -112,7 +112,7 @@ export default function Profile() {
         {!loading && listings.length>0 && (
           <>
             <h2 className='text-2xl text-center font-semibold'>My Listing</h2>
-            <ul>
+            <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6'>
               {listings.map((listing)=>(
                 <ListingItem key={listing.id} id={listing.id} listing={listing.data}/>
               ))}
